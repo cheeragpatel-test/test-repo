@@ -6,7 +6,7 @@ jobs:
   addstars:
     runs-on: ubuntu-latest
     steps:
-    - uses: cheeragpatel-test/checkout@latest
+    - uses: actions/checkout@v2 
     - name: add watcher to readme
       run: |
         echo -e "\nWe got a :star: from [@${{github.actor}}](https://github.com/${{github.actor}})" >> README.md 
