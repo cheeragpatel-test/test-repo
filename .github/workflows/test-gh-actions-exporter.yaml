@@ -1,0 +1,23 @@
+# .github/workflows/test-gh-actions-exporter.yaml
+---
+name: test-gh-actions-exporter
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  greet:
+    strategy:
+      matrix:
+        person:
+          - foo
+          - bar
+    runs-on:
+      - ubuntu
+      - focal
+      - large
+      - gcloud
+    steps:
+      - name: sleep
+        run: sleep 120
+      - name: Send greeting
+        run: echo "Hello ${{ matrix.person }}!"
