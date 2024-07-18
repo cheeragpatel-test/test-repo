@@ -11,16 +11,6 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'OOO')
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-        with:
-            repository: 'cheeragpatel-test/gcal-sync-workflow'
-            ref: 'auth-refactor'
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.0.2
-          bundler-cache: true
       - name: Sync
         uses: cheeragpatel-test/gcal-sync-workflow@auth-refactor
         env:
