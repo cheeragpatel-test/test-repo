@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Sync
-        uses: cheeragpatel-test/gcal-sync-workflow@auth-refactor
+        uses: cheeragpatel-test/gcal-sync-workflow/.github/workflows/ooo.yaml@auth-refactor
         env:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
