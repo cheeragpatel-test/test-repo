@@ -9,15 +9,13 @@ jobs:
   update_gcal:
     name: Sync CSA Global PTO
     if: contains(github.event.issue.labels.*.name, 'OOO')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Sync
-        uses: cheeragpatel-test/gcal-sync-workflow/.github/workflows/ooo.yaml@auth-refactor
-        env:
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          GOOGLE_CALENDAR_ID: ${{ vars.GOOGLE_CALENDAR_ID }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_EVENT_ACTION: ${{ github.event.action }}
-          GITHUB_ISSUE_NUMBER: ${{ github.event.issue.number }}
+    uses: cheeragpatel-test/gcal-sync-workflow/.github/workflows/ooo.yaml@auth-refactor
+    with:
+        GOOGLE_CALENDAR_ID: ${{ vars.GOOGLE_CALENDAR_ID }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        GITHUB_EVENT_ACTION: ${{ github.event.action }}
+        GITHUB_ISSUE_NUMBER: ${{ github.event.issue.number }}
+    secrets:
+        GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+        GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
