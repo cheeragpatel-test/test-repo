@@ -13,7 +13,8 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
         with:
-            repository: 'cheeragpatel-test/gcal-sync-workflow@auth-refactor'
+            repository: 'cheeragpatel-test/gcal-sync-workflow'
+            ref: 'auth-refactor'
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
