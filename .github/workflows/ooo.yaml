@@ -1,0 +1,31 @@
+name: Sync OOO to Google Calendar
+on:
+    issues:
+        types: [opened, edited, deleted]
+
+
+jobs:
+  update_gcal:
+    name: Sync CSA Global PTO
+    if: contains(github.event.issue.labels.*.name, 'OOO')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+            repository: 'cheeragpatel-test/gcal-sync-workflow@auth-refactor'
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.2
+          bundler-cache: true
+      - name: Sync
+        uses: cheeragpatel-test/gcal-sync-workflow@auth-refactor
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_CALENDAR_ID: ${{ vars.GOOGLE_CALENDAR_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_EVENT_ACTION: ${{ github.event.action }}
+          GITHUB_ISSUE_NUMBER: ${{ github.event.issue.number }}
