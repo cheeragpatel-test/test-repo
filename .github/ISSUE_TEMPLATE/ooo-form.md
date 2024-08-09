@@ -1,5 +1,5 @@
 ---
-name: 'CSA: Out of Office'
+name: 'CSA: Out of Office Form'
 about: Let your account teams and manager know about upcoming time off
 title: 'OOO: [GITHUB_HANDLE] from [DD-MMM-YYYY] to [DD-MMM-YYYY]'
 labels: OOO
