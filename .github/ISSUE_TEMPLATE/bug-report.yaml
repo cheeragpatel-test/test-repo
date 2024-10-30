@@ -9,19 +9,19 @@ body:
     attributes:
       label: 'How did you install `nvm`?'
       description: 'e.g. install script in readme, Homebrew'
-  - type: textarea
+  - type: markdown
     id: steps_performed
     attributes:
       label: 'What steps did you perform?'
-  - type: textarea
+  - type: markdown
     id: what_happened
     attributes:
       label: 'What happened?'
-  - type: textarea
+  - type: markdown
     id: expected_behavior
     attributes:
       label: 'What did you expect to happen?'
-  - type: textarea
+  - type: markdown
     id: profile_modifications
     attributes:
       label: 'Is there anything in any of your profile files that modifies the `PATH`?'
@@ -30,7 +30,7 @@ body:
     attributes:
       value: |
         <!-- Please remove the following section if it does not apply to you -->
-  - type: textarea
+  - type: markdown
     id: curl_output
     attributes:
       label: 'If you are having installation issues, or getting "N/A", what does `curl -I --compressed -v https://nodejs.org/dist/` print out?'
