@@ -12,25 +12,24 @@ body:
   - type: markdown
     id: steps_performed
     attributes:
-      label: 'What steps did you perform?'
+      value: 'What steps did you perform?'
   - type: markdown
     id: what_happened
     attributes:
-      label: 'What happened?'
+      value: 'What happened?'
   - type: markdown
     id: expected_behavior
     attributes:
-      label: 'What did you expect to happen?'
+      value: 'What did you expect to happen?'
   - type: markdown
     id: profile_modifications
     attributes:
-      label: 'Is there anything in any of your profile files that modifies the `PATH`?'
-      description: 'e.g. `.bashrc`, `.bash_profile`, `.zshrc`, etc.'
+      value: 'Is there anything in any of your profile files that modifies the `PATH`? <br> e.g. `.bashrc`, `.bash_profile`, `.zshrc`, etc.'
   - type: markdown
     attributes:
       value: |
-        <!-- Please remove the following section if it does not apply to you -->
+         Please remove the following section if it does not apply to you
   - type: markdown
     id: curl_output
     attributes:
-      label: 'If you are having installation issues, or getting "N/A", what does `curl -I --compressed -v https://nodejs.org/dist/` print out?'
+      value: 'If you are having installation issues, or getting "N/A", what does `curl -I --compressed -v https://nodejs.org/dist/` print out?'
