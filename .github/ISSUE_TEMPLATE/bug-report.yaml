@@ -1,0 +1,47 @@
+name: Bug Report
+description: Report a bug with nvm
+title: ''
+labels: [bug]
+assignees: []
+
+body:
+  - type: input
+    id: installation_method
+    attributes:
+      label: 'How did you install `nvm`?'
+      description: 'e.g. install script in readme, Homebrew'
+      placeholder: ''
+  - type: textarea
+    id: steps_performed
+    attributes:
+      label: 'What steps did you perform?'
+      description: ''
+      placeholder: ''
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: 'What happened?'
+      description: ''
+      placeholder: ''
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: 'What did you expect to happen?'
+      description: ''
+      placeholder: ''
+  - type: textarea
+    id: profile_modifications
+    attributes:
+      label: 'Is there anything in any of your profile files that modifies the `PATH`?'
+      description: 'e.g. `.bashrc`, `.bash_profile`, `.zshrc`, etc.'
+      placeholder: ''
+  - type: markdown
+    attributes:
+      value: |
+        <!-- Please remove the following section if it does not apply to you -->
+  - type: textarea
+    id: curl_output
+    attributes:
+      label: 'If you are having installation issues, or getting "N/A", what does `curl -I --compressed -v https://nodejs.org/dist/` print out?'
+      description: ''
+      placeholder: ''
