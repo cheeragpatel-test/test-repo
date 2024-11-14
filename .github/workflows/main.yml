@@ -2,19 +2,29 @@ name: Add Stars
 
 on: [watch]
 
+permissions:
+  checks: write
+  statuses: write
+  contents: write
+
 jobs:
   addstars:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2 
+    - uses: actions/checkout@v4 
     - name: add watcher to readme
       run: |
         echo -e "\nWe got a :star: from [@${{github.actor}}](https://github.com/${{github.actor}})" >> README.md 
     
-    - name: Commit changes
+    - name: commit
       run: |
-        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-        git config --global user.name "${{ github.actor }}"
-        git add README.md
-        git commit -m "Add star to README"
-        git push origin main
+        gh api graphql \
+          -F $githubRepository=$GITHUB_REPOSITORY \
+          -F branchName=$BRANCH \
+          -F expectedHeadOid=$(git rev-parse HEAD) \
+          -F commitMessage="chore: commit file" \
+          -F files[][path]="README.md" -F files[][contents]=$(base64 -w0 README.md) \
+          -F 'query=@.github/api/createCommitOnBranch.gql'
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: "main"
