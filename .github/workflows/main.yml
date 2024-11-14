@@ -19,7 +19,7 @@ jobs:
     - name: commit
       run: |
         gh api graphql \
-          -F $githubRepository=${{env.GITHUB_REPOSITORY}} \
+          -F githubRepository=${{env.GITHUB_REPOSITORY}} \
           -F branchName=${{env.BRANCH}} \
           -F expectedHeadOid=$(git rev-parse HEAD) \
           -F commitMessage="chore: commit file" \
