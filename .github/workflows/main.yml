@@ -28,3 +28,4 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: "main"
+        GITHUB_REPOSITORY: ${{ github.repository }}
