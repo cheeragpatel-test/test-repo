@@ -22,7 +22,7 @@ jobs:
           -F githubRepository=${{env.GITHUB_REPOSITORY}} \
           -F branchName=${{env.BRANCH}} \
           -F expectedHeadOid=$(git rev-parse HEAD) \
-          -F commitMessage="chore: commit file" \
+          -F commitMessage="Github Actions: commit file" \
           -F files[][path]="README.md" -F files[][contents]=$(base64 -w0 README.md) \
           -F 'query=@.github/api/createCommitOnBranch.gql'
       env:
