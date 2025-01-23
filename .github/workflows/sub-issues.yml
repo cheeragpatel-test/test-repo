@@ -1,88 +1,53 @@
 name: Create Sub Issues from Tasklist
-
 on:
   issues:
-    types: [opened]
+    types: [opened, edited]
 
 jobs:
   create-sub-issues:
     runs-on: ubuntu-latest
+    if: contains( toJSON(github.event.issue.labels) , 'CS-Release-Readiness')
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Create linked sub-issues from tasklist
+        uses: actions/github-script@v7.0.1
         with:
-          node-version: '20'
+          script: |
+            const issueBody = context.payload.issue.body
+            const parentIssueNumber = context.payload.issue.number
 
-      - name: Install Octokit
-        run: npm install @octokit/rest
+            // Extract the content between ```[tasklist] and ```
+            const matchTasklist = issueBody.match(/```\[tasklist\]([\s\S]*?)```/)
+            if (!matchTasklist) {
+              core.info('No [tasklist] section found in the issue body.')
+              return
+            }
 
-      - name: Run script to create sub-issues
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          const { Octokit } = require("@octokit/rest");
-          const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+            const tasklistContent = matchTasklist[1]
+            // Identify lines that match '- [ ] ...'
+            const tasks = tasklistContent.match(/^- \[ \] .+/gm) || []
 
-          // Retrieve the issue payload from GitHub Actions environment variables
-          const issue = JSON.parse(process.env.GITHUB_EVENT_PATH ? 
-            require('fs').readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8') : 
-            '{}' );
-
-          const issueBody = issue.issue.body;
-          const parentIssueNumber = issue.issue.number;
-          const labels = issue.issue.labels.map(label => label.name);
-
-          // Check if the issue has the 'CS-Release-Readiness' label
-          if (!labels.includes('CS-Release-Readiness')) {
-            console.log('Issue does not have the CS-Release-Readiness label. Exiting.');
-            process.exit(0);
-          }
-
-          // Extract the content between ```[tasklist] and ```
-          const tasklistMatch = issueBody.match(/```\\[tasklist\\]([\\s\\S]*?)```/);
-          if (!tasklistMatch) {
-            console.log('No [tasklist] section found in the issue body.');
-            process.exit(0);
-          }
-
-          const tasklistContent = tasklistMatch[1];
-          // Identify lines that match '- [ ] ...'
-          const tasks = tasklistContent.match(/^- \\[ \\] .+/gm) || [];
-
-          const createSubIssues = async () => {
             for (const task of tasks) {
-              const title = task.replace(/^- \\[ \\] /, '').trim();
-
-              // Create a sub-issue for each task
-              const newIssue = await octokit.issues.create({
-                owner: issue.repository.owner.login,
-                repo: issue.repository.name,
+              const title = task.replace(/^- \[ \] /, '').trim()
+              const newIssue = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
                 title: title,
                 body: `Sub-issue of #${parentIssueNumber}`
-              });
+              })
 
               // Link the sub issue to the parent issue
-              await octokit.rest.issues.addSubIssue({
+              await github.requests.request('POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues', {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: parentIssueNumber,
                 sub_issue_id: newIssue.data.id
-              });
+              })
 
-              // Comment on the parent issue linking the new sub-issue
-              await octokit.issues.createComment({
-                owner: issue.repository.owner.login,
-                repo: issue.repository.name,
+               // Comment on the parent issue linking the new sub-issue
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
                 issue_number: parentIssueNumber,
                 body: `Created sub-issue: #${newIssue.data.number} for task: "${title}"`
-              });
+              })             
             }
-          };
-
-          createSubIssues().catch(error => {
-            console.error(error);
-            process.exit(1);
-          });
