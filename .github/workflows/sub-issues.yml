@@ -1,4 +1,9 @@
 name: Create Sub Issues from Tasklist
+
+permissions:
+    issues: write
+    contents: read
+
 on:
   issues:
     types: [opened, edited]
