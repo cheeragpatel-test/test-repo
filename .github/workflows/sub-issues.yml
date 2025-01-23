@@ -36,7 +36,7 @@ jobs:
               })
 
               // Link the sub issue to the parent issue
-              await github.requests.request('POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues', {
+              await github.request('POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues', {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: parentIssueNumber,
